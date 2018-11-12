@@ -1,0 +1,6 @@
+{
+  "outputPath": "./src/contracts",
+  "contracts": {
+    "GasStation": "./contracts/build/contracts/GasStation.json"
+  }
+}
