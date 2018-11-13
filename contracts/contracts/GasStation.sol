@@ -16,7 +16,7 @@ contract GasStation {
     
     address token;
     address public owner;
-    Plan[] plans;
+    Plan[] public plans;
     mapping (address => Subscription) public subscriptions;
     mapping(address => uint) public nonce;
     uint constant MIN_GAS = 21000;

@@ -1,7 +1,7 @@
 import "./App.css";
 
 import * as React from "react";
-import logo from "./logo.svg";
+import logo from "./CL_logo.png";
 import { ethers } from "ethers";
 import * as GasStation from "./contracts/GasStation.json";
 import * as Counter from "./contracts/Counter.json";
@@ -226,11 +226,31 @@ class App extends React.Component<any, State> {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">
-            Welcome to GasStation subscription service
+            GasStation Subscription Service
           </h1>
+          <h3>Powered by MetaTX</h3>
+          
         </header>
-        <p className="App-intro">YAY!</p>
-
+        <div className="App-how">
+          <pre>
+            How it works:<br/>
+            GasStation contract allow to subscribe for N amount of gas in exchange for a set price <br/>
+            Sender signs the MetaTX <br/>
+            Relayer transmits <br/>
+            <br/>
+            Missing: <br/>
+            Pretty much everything :) that makes this usable in real life scenarios<br/>
+            Stay tuned!<br/>
+            <br/>
+            How to use it: <br/>
+            1. Deploy the GasStation contract - address will be stored in localStorage <br/>
+            2. Deploy the example Counter contract - address will be stored in localStorage <br/>
+            3. Buy subscription<br/>
+            4. Increment - to sign the message<br/>
+            5. Relay - to publish the message<br/>
+          </pre>
+        </div>
+        <div ></div>
         {this.renderGasStation()}
         {this.renderCounter()}
         <hr />

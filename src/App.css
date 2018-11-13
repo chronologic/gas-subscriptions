@@ -3,15 +3,18 @@
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 200px;
+}
+
+.App-how {
+  display: block;
+  margin-bottom: 50px;
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
+  background-color: #ffffff;
+  height: 300px;
   padding: 20px;
-  color: white;
 }
 
 .App-title {
