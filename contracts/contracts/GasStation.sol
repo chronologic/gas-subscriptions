@@ -21,7 +21,7 @@ contract GasStation {
     mapping(address => uint) public nonce;
     uint constant MIN_GAS = 21000;
     
-    event Relayed(bytes sig, address signer, address destination, bytes data, uint remaining, bytes32 _hash);
+    event Relayed(bytes sig, address signer, address destination, bytes data, uint remaining, uint consumed, bytes32 _hash);
     
     constructor(address _token) public {
         token = _token;
@@ -76,10 +76,12 @@ contract GasStation {
         uint startGas = gasleft();
         
         executeCall(destination, value, data);
+
+        uint consumed = startGas - gasleft() + MIN_GAS;
         
-        subscriptions[signer].remaining -= startGas - gasleft();
+        subscriptions[signer].remaining -= consumed;
         
-        emit Relayed(sig, signer, destination, data, subscriptions[signer].remaining, _hash);
+        emit Relayed(sig, signer, destination, data, subscriptions[signer].remaining, consumed, _hash);
     }
     
     // copied from https://github.com/uport-project/uport-identity/blob/develop/contracts/Proxy.sol
