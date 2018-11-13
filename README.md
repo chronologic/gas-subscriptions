@@ -20,3 +20,6 @@
 3. Buy subscription
 4. Increment - to sign the message
 5. Relay - to publish the message
+
+Try it now:
+https://chronologic.github.io/gas-subscriptions/
