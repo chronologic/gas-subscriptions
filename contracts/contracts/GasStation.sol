@@ -15,9 +15,9 @@ contract GasStation {
     }
     
     address token;
-    address owner;
+    address public owner;
     Plan[] plans;
-    mapping (address => Subscription) subscriptions;
+    mapping (address => Subscription) public subscriptions;
     mapping(address => uint) public nonce;
     uint constant MIN_GAS = 21000;
     
@@ -29,16 +29,26 @@ contract GasStation {
         
         plans.push(Plan(
             100*10**6, //100M gas 
-            2*10**18, //2DAI
+            20000, //2*10**18, //2DAI
             30 days)); //30days
     }
-    
-    
+        
     function subscribe(address signer, uint8 plan) public returns (bool) {
         Plan memory p = plans[plan];
         
         require(p.gas > 0); //dumb check if plan exists
         require(ERC20Interface(token).transferFrom(msg.sender, this, p.price)); //move tokens from sender to relayer
+        
+        subscriptions[signer] = Subscription(p.gas, now + p.period);
+        
+        return true;
+    }
+
+    function subscribeETH(address signer, uint8 plan) public payable returns (bool) {
+        Plan memory p = plans[plan];
+        
+        require(p.gas > 0); //dumb check if plan exists
+        require(msg.value >= p.price); //move tokens from sender to relayer
         
         subscriptions[signer] = Subscription(p.gas, now + p.period);
         
