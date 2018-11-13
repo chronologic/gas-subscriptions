@@ -69,9 +69,9 @@ contract GasStation {
         address _signer = verifySigner(_hash,sig);
         
         require(signer == _signer);
-        require(subscriptions[signer].validUntil > now); //valid subscription
-        require(subscriptions[signer].remaining > MIN_GAS); //whatever minimum gas
-        
+        require(subscriptions[signer].validUntil > now, "Subscription: invalid"); //valid subscription
+        require(subscriptions[signer].remaining > MIN_GAS, "Subscription: not enough remaining gas"); //whatever minimum gas
+    
         //gas accounting
         uint startGas = gasleft();
         
@@ -97,7 +97,7 @@ contract GasStation {
     
     //borrowed from OpenZeppelin's ESDA stuff:
   //https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/cryptography/ECDSA.sol
-    function verifySigner(bytes32 _hash, bytes _signature) internal pure returns (address){
+    function verifySigner(bytes32 _hash, bytes _signature) public pure returns (address){
         bytes32 r;
         bytes32 s;
         uint8 v;

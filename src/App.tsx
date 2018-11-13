@@ -118,6 +118,8 @@ class App extends React.Component<any, State> {
       value: 20000
     });
     const receipt = await tx.wait();
+    
+    console.log(receipt);
   }
 
   public async sign() {
@@ -125,34 +127,16 @@ class App extends React.Component<any, State> {
     let nonce = await this.gasStation.nonce(signer);
     nonce = ethers.utils.bigNumberify(nonce._hex).toNumber();
 
-    const types = [
-      "address",
-      "address",
-      "address",
-      "uint256",
-      "bytes",
-      "uint256"
-    ];
+    const hash = await this.gasStation.getHash(signer, this.state.counter, 0, "0xd09de08a");
+    const bin = ethers.utils.arrayify(hash);
 
-    const message = [
-      this.state.gasStation, //proxy
-      signer, //signer
-      this.state.counter, //destination
-      0, //value
-      "0xd09de08a", //increment calldata
-      nonce
-    ];
-
-    const hash = ethers.utils.solidityKeccak256(types, message);
-    const signedMessage = await this.signer.signMessage(hash);
+    const signedMessage = await this.signer.signMessage(bin);
 
     this.setState({ signedMessage });
   }
 
   public async relay() {
     const signer = await this.signer.getAddress();
-
-    debugger;
     const relay = await this.gasStation.relay(
       this.state.signedMessage,
       signer,
@@ -162,7 +146,9 @@ class App extends React.Component<any, State> {
     );
 
     const receipt = await relay.wait();
-    debugger;
+    const event = receipt.events.pop();
+
+    console.log(event);
   }
 
   public renderGasStation() {
@@ -179,6 +165,11 @@ class App extends React.Component<any, State> {
         <div>
           <div> Using GasStation {this.state.gasStation} </div>
           <div> Owner {this.state.owner} </div>
+          <div>
+            <button onClick={this.deployGasStation.bind(this)}>
+              Re-deploy GasStation
+            </button>
+          </div>
         </div>
       );
     }
